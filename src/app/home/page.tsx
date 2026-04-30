@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 type Lesson = {
   id: number;
@@ -12,9 +13,15 @@ type Lesson = {
 
 export default function HomePage() {
   const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const access = localStorage.getItem("access");
+
+    if (!access) {
+      window.location.href = "/login";
+      return;
+    }
 
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/lessons/`, {
       headers: {
@@ -22,23 +29,81 @@ export default function HomePage() {
       },
     })
       .then((res) => res.json())
-      .then((data) => setLessons(data))
-      .catch((err) => console.error(err));
+      .then((data) => {
+        console.log("LESSONS DATA:", data);
+
+        if (Array.isArray(data)) {
+          setLessons(data);
+        } else if (Array.isArray(data.results)) {
+          setLessons(data.results);
+        } else {
+          setLessons([]);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLessons([]);
+      })
+      .finally(() => setLoading(false));
   }, []);
+
+  const logout = () => {
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    window.location.href = "/login";
+  };
 
   return (
     <main className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold mb-6">Skillvine Home</h1>
-
-      <div className="grid gap-4">
-        {lessons.map((lesson) => (
-          <div key={lesson.id} className="bg-white p-4 rounded-xl shadow">
-            <h2 className="text-xl font-bold">{lesson.title}</h2>
-            <p>{lesson.category}</p>
-            <p>{lesson.description}</p>
-            <p>{lesson.price_coins} coins</p>
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Skillvine Dashboard
+            </h1>
+            <p className="text-gray-600">Browse available lessons</p>
           </div>
-        ))}
+
+          <button
+            onClick={logout}
+            className="rounded-full bg-red-600 px-5 py-2 font-bold text-white"
+          >
+            Logout
+          </button>
+        </div>
+
+        {loading && <p>Loading lessons...</p>}
+
+        {!loading && lessons.length === 0 && (
+          <div className="rounded-xl bg-white p-6 shadow">
+            <p className="text-gray-600">No lessons found yet.</p>
+            <Link href="/" className="mt-3 inline-block text-blue-600 underline">
+              Back to landing page
+            </Link>
+          </div>
+        )}
+
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {lessons.map((lesson) => (
+            <div key={lesson.id} className="rounded-xl bg-white p-5 shadow">
+              <h2 className="text-xl font-bold text-gray-900">
+                {lesson.title}
+              </h2>
+
+              <p className="mt-1 text-sm font-semibold text-blue-700">
+                {lesson.category}
+              </p>
+
+              <p className="mt-3 text-gray-600">
+                {lesson.description || "No description available."}
+              </p>
+
+              <p className="mt-4 font-bold text-gray-900">
+                {lesson.price_coins ?? 0} coins
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </main>
   );
