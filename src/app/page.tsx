@@ -1,65 +1,137 @@
+import Link from "next/link";
 import Image from "next/image";
+
+const slides = [
+  "teaching_online.jpeg",
+  "kids_listening.jpeg",
+  "female_teaching_guitar.jpeg",
+  "male_teaching_guitar.jpeg",
+  "female_teaching_fitness.jpeg",
+  "male_teaching_fitness.jpeg",
+  "female_teaching_piano.jpeg",
+  "male_teaching_piano.jpeg",
+  "male_teaching_programming.jpeg",
+  "teaching(female).jpeg",
+  "teacher_1.jpeg",
+  "joinnow.jpeg",
+  "banner_skillvine.jpeg",
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+
+      {/* ABOUT POPUP */}
+      <div id="about-tab" className="tab-popup">
+        <div className="tab-content">
+          <span className="close-tab">&times;</span>
+          <h2>About Skillvine</h2>
+          <p>
+            Skillvine connects students with verified teachers to help them learn
+            new skills online. Our platform is secure, reliable, and fun. We value
+            learning, growth, and building trusted teacher-student relationships.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+
+      {/* SERVICES POPUP */}
+      <div id="services-tab" className="tab-popup">
+        <div className="tab-content">
+          <span className="close-tab">&times;</span>
+          <h2>Our Services</h2>
+          <ul>
+            <li>Verified Teachers for different subjects</li>
+            <li>Coins System to pay securely for sessions</li>
+            <li>Automatic Ratings for teacher credibility</li>
+            <li>Online lessons for kids and adults</li>
+          </ul>
         </div>
-      </main>
-    </div>
+      </div>
+
+      {/* CONTACT POPUP */}
+      <div id="contact-tab" className="tab-popup">
+        <div className="tab-content">
+          <span className="close-tab">&times;</span>
+          <h2>Contact Us</h2>
+          <p id="contact-text">
+            For collaborations, support, or inquiries, reach out to us:
+          </p>
+          <ul>
+            <li>
+              Email:{" "}
+              <a href="mailto:skillvine.tech@gmail.com">
+                skillvine.tech@gmail.com
+              </a>
+            </li>
+            <li>Phone: +63</li>
+            <li>Address: 1850, San Mateo, Rizal, Philippines</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* HERO */}
+      <section className="hero">
+        <div className="hero-content">
+          <h1 id="first-h1-styling">Skillvine</h1>
+          <h1 id="h1-font-style">
+            Learn New Skills with Our Trusted Teachers, Let&apos;s Grow with Skillvine
+          </h1>
+          <p id="p-font-style">
+            From languages to music to school support, connect with verified
+            educators, gain real skills, and explore exciting opportunities — all
+            in one vibrant learning community.
+          </p>
+          <a href="#features" className="btn hero-btn">Get Started</a>
+        </div>
+      </section>
+
+      {/* SLIDER */}
+      <section className="image-slider">
+        <div className="slider">
+          <div className="slides">
+            {slides.map((img, index) => (
+              <Image
+                key={img}
+                src={`/images/${img}`}
+                alt={`Skillvine slide ${index + 1}`}
+                width={1200}
+                height={600}
+              />
+            ))}
+          </div>
+
+          <div className="slider-caption">
+            <h1>Discover the Joy of Learning with Skillvine</h1>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURES */}
+      <section className="features" id="features">
+        <div className="signup">
+          <Link className="text-signup" href="/signup">Sign Up Now</Link>
+        </div>
+
+        <h2 className="features-title">Why Choose Skillvine?</h2>
+
+        <div className="feature-container">
+          <div className="feature-card">
+            <h4>✅ Verified Teachers</h4>
+            <p>Learn from experienced teachers who are verified with valid IDs.</p>
+          </div>
+
+          <div className="feature-card">
+            <h4>💰 Coins System</h4>
+            <p>Buy credits and pay for sessions securely within the platform.</p>
+          </div>
+
+          <div className="feature-card">
+            <h4>⭐ Automatic Ratings</h4>
+            <p>Students rate teachers after sessions to build reputation and trust.</p>
+          </div>
+        </div>
+      </section>
+
+    </>
   );
 }
