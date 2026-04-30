@@ -30,8 +30,6 @@ export default function HomePage() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("LESSONS DATA:", data);
-
         if (Array.isArray(data)) {
           setLessons(data);
         } else if (Array.isArray(data.results)) {
@@ -40,10 +38,7 @@ export default function HomePage() {
           setLessons([]);
         }
       })
-      .catch((err) => {
-        console.error(err);
-        setLessons([]);
-      })
+      .catch(() => setLessons([]))
       .finally(() => setLoading(false));
   }, []);
 
@@ -54,66 +49,106 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-100 p-6">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              Skillvine Dashboard
-            </h1>
-            <p className="text-gray-600">Browse available lessons</p>
-          </div>
+    <main className="dashboard-container">
+      <aside className="sidebar">
+        <div>
+          <h2 className="sidebar-logo">Skillvine</h2>
 
-          <button
-            onClick={logout}
-            className="rounded-full bg-red-600 px-5 py-2 font-bold text-white"
-          >
-            Logout
-          </button>
-        </div>
-
-        {loading && <p>Loading lessons...</p>}
-
-        {!loading && lessons.length === 0 && (
-          <div className="rounded-xl bg-white p-6 shadow">
-            <p className="text-gray-600">No lessons found yet.</p>
-            <Link href="/" className="mt-3 inline-block text-blue-600 underline">
-              Back to landing page
+          <nav className="sidebar-nav">
+            <Link className="active" href="/home">
+              Dashboard
             </Link>
-          </div>
-        )}
-
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {lessons.map((lesson) => (
-                <div
-                key={lesson.id}
-                className="rounded-2xl bg-white p-6 shadow-md transition hover:shadow-xl"
-                >
-                <h2 className="text-xl font-bold text-gray-900">
-                    {lesson.title}
-                </h2>
-
-                <span className="inline-block mt-2 rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-700">
-                    {lesson.category}
-                </span>
-
-                <p className="mt-4 text-gray-600">
-                    {lesson.description || "No description available."}
-                </p>
-
-                <div className="mt-5 flex items-center justify-between">
-                    <p className="font-bold text-gray-900">
-                    {lesson.price_coins ?? 0} coins
-                    </p>
-
-                    <button className="rounded-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
-                    View
-                    </button>
-                </div>
-                </div>
-            ))}
+            <Link href="/profile">Profile</Link>
+            <Link href="/search">Search</Link>
+            <Link href="/lessons">Browse Lessons</Link>
+            <Link href="/learning">My Learning</Link>
+            <Link href="/wallet">Wallet</Link>
+            <Link href="/notifications">Notifications</Link>
+            <Link href="/settings">Settings</Link>
+          </nav>
         </div>
-      </div>
+
+        <button onClick={logout} className="sidebar-logout">
+          Logout
+        </button>
+      </aside>
+
+      <section className="main-content">
+        <div className="topbar">
+          <div>
+            <h1>Welcome, admin!</h1>
+            <p>Manage your learning progress and explore available lessons.</p>
+          </div>
+
+          <span className="role-badge">Student</span>
+        </div>
+
+        <div className="cards">
+          <div className="card">
+            <h3>Enrolled Classes</h3>
+            <p>0</p>
+          </div>
+
+          <div className="card">
+            <h3>Available Coins</h3>
+            <p>0</p>
+          </div>
+
+          <div className="card">
+            <h3>Unread Notifications</h3>
+            <p>4</p>
+          </div>
+        </div>
+
+        <section className="dashboard-panel">
+          <h2>Student Overview</h2>
+          <p>
+            Track your learning progress, manage your coins, and stay updated
+            with notifications from teachers and the platform.
+          </p>
+        </section>
+
+        <section className="dashboard-panel">
+          <div className="panel-header">
+            <div>
+              <h2>Browse Lessons</h2>
+              <p>Available lessons from Skillvine teachers.</p>
+            </div>
+          </div>
+
+          {loading && <p className="muted-text">Loading lessons...</p>}
+
+          {!loading && lessons.length === 0 && (
+            <p className="muted-text">No lessons found yet.</p>
+          )}
+
+          <div className="lesson-grid">
+            {lessons.map((lesson) => (
+              <article key={lesson.id} className="lesson-card">
+                <span className="lesson-category">{lesson.category}</span>
+
+                <h3>{lesson.title}</h3>
+
+                <p>{lesson.description || "No description available."}</p>
+
+                <div className="lesson-card-footer">
+                  <strong>{lesson.price_coins ?? 0} coins</strong>
+                  <button>View</button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="dashboard-panel">
+          <h2>Recent Activity</h2>
+          <ul className="activity-list">
+            <li>You enrolled in a lesson.</li>
+            <li>A teacher published a new class.</li>
+            <li>Your wallet was updated.</li>
+          </ul>
+        </section>
+      </section>
     </main>
   );
 }
