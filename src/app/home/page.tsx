@@ -84,25 +84,34 @@ export default function HomePage() {
         )}
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {lessons.map((lesson) => (
-            <div key={lesson.id} className="rounded-xl bg-white p-5 shadow">
-              <h2 className="text-xl font-bold text-gray-900">
-                {lesson.title}
-              </h2>
+            {lessons.map((lesson) => (
+                <div
+                key={lesson.id}
+                className="rounded-2xl bg-white p-6 shadow-md transition hover:shadow-xl"
+                >
+                <h2 className="text-xl font-bold text-gray-900">
+                    {lesson.title}
+                </h2>
 
-              <p className="mt-1 text-sm font-semibold text-blue-700">
-                {lesson.category}
-              </p>
+                <span className="inline-block mt-2 rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-700">
+                    {lesson.category}
+                </span>
 
-              <p className="mt-3 text-gray-600">
-                {lesson.description || "No description available."}
-              </p>
+                <p className="mt-4 text-gray-600">
+                    {lesson.description || "No description available."}
+                </p>
 
-              <p className="mt-4 font-bold text-gray-900">
-                {lesson.price_coins ?? 0} coins
-              </p>
-            </div>
-          ))}
+                <div className="mt-5 flex items-center justify-between">
+                    <p className="font-bold text-gray-900">
+                    {lesson.price_coins ?? 0} coins
+                    </p>
+
+                    <button className="rounded-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+                    View
+                    </button>
+                </div>
+                </div>
+            ))}
         </div>
       </div>
     </main>
