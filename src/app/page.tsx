@@ -1,5 +1,6 @@
 "use client";
 
+import "./landing.css";
 import Link from "next/link";
 import Image from "next/image";
 import ClientInteractions from "./ClientInteractions";
