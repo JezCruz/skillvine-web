@@ -1,9 +1,9 @@
 "use client";
 
-import "./landing.css";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import ClientInteractions from "./ClientInteractions";
+import "./landing.css";
 
 const slides = [
   "teaching_online.jpeg",
@@ -22,29 +22,47 @@ const slides = [
 ];
 
 export default function Home() {
+  const [popup, setPopup] = useState<"about" | "services" | "contact" | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const scrollToFeatures = () => {
+    document.getElementById("features")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
     <>
       <header>
         <nav className="navbar">
-          <button type="button" className="menu-toggle">
+          <button
+            type="button"
+            className="menu-toggle"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
             &#9776;
           </button>
 
           <div className="logo">
-            <Link href="/" style={{ color: "white", textDecoration: "none" }}>
-              Skillvine
-            </Link>
+            <Link href="/">Skillvine</Link>
           </div>
 
-          <ul className="nav-links">
+          <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
             <li>
-              <a href="#" id="about-link">About</a>
+              <button type="button" onClick={() => setPopup("about")}>
+                About
+              </button>
             </li>
             <li>
-              <a href="#" id="services-link">Services</a>
+              <button type="button" onClick={() => setPopup("services")}>
+                Services
+              </button>
             </li>
             <li>
-              <a href="#" id="contact-link">Contact</a>
+              <button type="button" onClick={() => setPopup("contact")}>
+                Contact
+              </button>
             </li>
           </ul>
 
@@ -54,10 +72,12 @@ export default function Home() {
         </nav>
       </header>
 
-      <main>
-        <div id="about-tab" className="tab-popup">
-          <div className="tab-content">
-            <span className="close-tab">&times;</span>
+      {popup === "about" && (
+        <div className="tab-popup show" onClick={() => setPopup(null)}>
+          <div className="tab-content" onClick={(e) => e.stopPropagation()}>
+            <span className="close-tab" onClick={() => setPopup(null)}>
+              &times;
+            </span>
             <h2>About Skillvine</h2>
             <p>
               Skillvine connects students with verified teachers to help them
@@ -67,10 +87,14 @@ export default function Home() {
             </p>
           </div>
         </div>
+      )}
 
-        <div id="services-tab" className="tab-popup">
-          <div className="tab-content">
-            <span className="close-tab">&times;</span>
+      {popup === "services" && (
+        <div className="tab-popup show" onClick={() => setPopup(null)}>
+          <div className="tab-content" onClick={(e) => e.stopPropagation()}>
+            <span className="close-tab" onClick={() => setPopup(null)}>
+              &times;
+            </span>
             <h2>Our Services</h2>
             <ul>
               <li>Verified Teachers for different subjects</li>
@@ -80,10 +104,14 @@ export default function Home() {
             </ul>
           </div>
         </div>
+      )}
 
-        <div id="contact-tab" className="tab-popup">
-          <div className="tab-content">
-            <span className="close-tab">&times;</span>
+      {popup === "contact" && (
+        <div className="tab-popup show" onClick={() => setPopup(null)}>
+          <div className="tab-content" onClick={(e) => e.stopPropagation()}>
+            <span className="close-tab" onClick={() => setPopup(null)}>
+              &times;
+            </span>
             <h2>Contact Us</h2>
             <p id="contact-text">
               For collaborations, support, or inquiries, reach out to us:
@@ -100,7 +128,9 @@ export default function Home() {
             </ul>
           </div>
         </div>
+      )}
 
+      <main>
         <section className="hero">
           <div className="hero-content">
             <h1 id="first-h1-styling">Skillvine</h1>
@@ -113,9 +143,9 @@ export default function Home() {
               educators, gain real skills, and explore exciting opportunities —
               all in one vibrant learning community.
             </p>
-            <a href="#features" className="btn hero-btn">
+            <button type="button" className="btn hero-btn" onClick={scrollToFeatures}>
               Get Started
-            </a>
+            </button>
           </div>
         </section>
 
@@ -152,9 +182,7 @@ export default function Home() {
           <div className="feature-container">
             <div className="feature-card">
               <h4>✅ Verified Teachers</h4>
-              <p>
-                Learn from experienced teachers who are verified with valid IDs.
-              </p>
+              <p>Learn from experienced teachers who are verified with valid IDs.</p>
             </div>
 
             <div className="feature-card">
@@ -164,10 +192,7 @@ export default function Home() {
 
             <div className="feature-card">
               <h4>⭐ Automatic Ratings</h4>
-              <p>
-                Students rate teachers after sessions to build reputation and
-                trust.
-              </p>
+              <p>Students rate teachers after sessions to build reputation and trust.</p>
             </div>
           </div>
         </section>
@@ -176,8 +201,6 @@ export default function Home() {
       <footer>
         <p>&copy; 2025 Skillvine. All rights reserved.</p>
       </footer>
-
-      <ClientInteractions />
     </>
   );
 }

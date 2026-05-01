@@ -699,3 +699,15 @@ footer {
   box-shadow: 0 22px 55px rgba(0,0,0,0.3);
   background: #05267f;
 }
+
+.nav-links button {
+  background: none;
+  border: none;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+.nav-links button:hover {
+  color: #00c4cc;
+}
